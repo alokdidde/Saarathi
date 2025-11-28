@@ -1,0 +1,982 @@
+# FlowForge PRD
+## WhatsApp Business Intelligence for Micro-Businesses
+
+**Version:** 3.0  
+**Date:** November 2025  
+**Target:** MumbaiHacks 2025 - Fintech Track (PS2)
+
+---
+
+## 1. Executive Summary
+
+### What is FlowForge?
+
+FlowForge is a **WhatsApp-native business intelligence assistant** that answers the question every micro-business owner has but can't answer: **"How is my business doing, and what will next week look like?"**
+
+### One-Line Pitch
+
+> "Your business's future, delivered to WhatsApp every morning."
+
+### The Hero Feature: See Your Future
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│  "Priya, here's your next 7 days:"                            │
+│                                                                │
+│  Day       Cash        Event                                  │
+│  ───       ────        ─────                                  │
+│  Mon       ₹24,500     ✓ Normal day                           │
+│  Tue       ₹22,200     ↓ Grocery restock                      │
+│  Wed       ₹19,800     ↓ Gas + supplies                       │
+│  Thu       ₹18,300     ⚠️ Below safety                        │
+│  Fri       ₹15,300     🔴 SALARY DAY - ₹3K short!            │
+│  Sat       ₹27,800     ↑ Weekend collections                  │
+│  Sun       ₹26,500     ✓ Recovery                             │
+│                                                                │
+│  ⚠️ Friday looks tight. Collect ₹3K before then.             │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### Core Value Props
+
+| Owner's Question | FlowForge Answer |
+|------------------|------------------|
+| "Mera business kaisa chal raha hai?" | Health Score: 74/100 — Good |
+| "Next week paisa bachega?" | 7-day projection with alerts |
+| "Staff ko kab dena hai?" | Salary calendar + reminders |
+| "Main profit mein hoon ya loss mein?" | Live P&L this month |
+| "Kahan dhyan dena chahiye?" | Top 3 things to watch |
+
+---
+
+## 2. Problem Statement
+
+### The User: Priya, Tiffin Service Owner
+
+| Fact | Reality |
+|------|---------|
+| Monthly Revenue | ₹1,10,000 |
+| Monthly Expenses | ₹75,000 |
+| Staff | 3 people (₹23,000/month) |
+| Record Keeping | Physical notebook |
+| Financial Visibility | Zero |
+
+### What Priya Can't Answer Today
+
+1. **"Is my business profitable?"** — She sees revenue but not expenses clearly
+2. **"Will I have cash on salary day?"** — Always a surprise
+3. **"Am I growing or shrinking?"** — No comparison to past
+4. **"What should I worry about?"** — Everything feels urgent
+5. **"How much do customers owe?"** — Lost in notebook pages
+
+### Why This Matters
+
+- 63M MSMEs in India
+- 95% have **zero financial visibility**
+- Cash crunches are the #1 business killer
+- Existing tools (Khatabook, Tally) show data but don't **predict or advise**
+
+---
+
+## 3. Solution: The Three Pillars
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     FLOWFORGE = 3 PILLARS                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   🔮 FUTURE           📊 PRESENT          📝 TRACKING          │
+│   ────────            ───────            ────────              │
+│                                                                 │
+│   7/14/30-day         Business           Simple logging        │
+│   cash projection     health score       for income,           │
+│                                          expenses, staff       │
+│   What will happen    How am I doing                           │
+│   next week?          right now?         Photo → Data          │
+│                                          Voice → Data          │
+│   Early warnings      Key metrics        Text → Data           │
+│   for problems        to watch                                 │
+│                                                                 │
+│   ⭐ HERO FEATURE     Daily briefs       Payroll calendar      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. Feature Details
+
+### 4.1 🔮 FUTURE: Cash Flow Projections
+
+**This is the most important feature.**
+
+#### What It Shows
+
+For next 7/14/30 days:
+- Projected daily cash position
+- Known commitments (salaries, rent)
+- Expected patterns (based on history)
+- Problem days highlighted
+
+#### The Weekly Forecast (Every Monday)
+
+```
+📅 *NEXT 7 DAYS FORECAST*
+
+Starting cash: ₹24,500
+
+Mon 2nd:  ₹24,500  ━━━━━━━━━━ ✓
+Tue 3rd:  ₹22,000  ━━━━━━━━   ↓ supplies
+Wed 4th:  ₹20,500  ━━━━━━━    ↓ gas
+Thu 5th:  ₹19,000  ━━━━━━     ⚠️ low
+Fri 6th:  ₹-4,000  ━          🔴 SALARY DAY
+Sat 7th:  ₹12,000  ━━━━       ↑ weekend
+Sun 8th:  ₹11,500  ━━━━       ✓
+
+🔴 *ALERT: Friday Problem*
+
+Salary: ₹23,000
+Projected cash: ₹19,000
+Gap: ₹4,000
+
+*What can help:*
+• ₹12,000 pending from TechPark
+• ₹5,000 pending from Kumar
+• Collect any ₹4K+ before Friday
+```
+
+#### How Projections Work
+
+**Inputs:**
+| Source | Data |
+|--------|------|
+| Current cash | Last known balance |
+| Fixed commitments | Salaries (dates known), Rent |
+| Historical patterns | Average daily expenses by weekday |
+| Pending receivables | Who owes, how reliable they are |
+| Seasonal patterns | Month-over-month trends |
+
+**Output:**
+- Daily projected balance
+- Confidence level (high/medium/low)
+- Risk days flagged
+- Suggested actions
+
+---
+
+### 4.2 📊 PRESENT: Business Health Dashboard
+
+#### The Health Score (0-100)
+
+Simple, single number that tells you: **"Is my business okay?"**
+
+```
+💚 HEALTH SCORE: 78/100
+   "Your business is healthy"
+
+┌─────────────────────────────────────┐
+│ Cash Runway      ████████░░  82    │
+│ Profit Margin    ███████░░░  71    │
+│ Collection Speed ████████░░  80    │
+│ Expense Control  ███████░░░  74    │
+│ Growth Trend     ████████░░  83    │
+└─────────────────────────────────────┘
+
+vs Last Month: ↑ 5 points
+```
+
+#### Health Score Components
+
+| Component | Weight | What It Measures |
+|-----------|--------|------------------|
+| **Cash Runway** | 25% | Days of expenses covered by current cash |
+| **Profit Margin** | 25% | Revenue minus expenses, as percentage |
+| **Collection Speed** | 15% | How fast money comes in |
+| **Expense Control** | 15% | Expenses vs historical average |
+| **Growth Trend** | 20% | Revenue trend vs previous period |
+
+#### Scoring Logic
+
+| Score Range | Status | Meaning |
+|-------------|--------|---------|
+| 80-100 | 💚 Excellent | Business thriving |
+| 60-79 | 💛 Good | Healthy, minor attention needed |
+| 40-59 | 🟠 Caution | Issues to address |
+| 0-39 | 🔴 Critical | Immediate action needed |
+
+---
+
+### 4.3 📝 TRACKING: Simple Business Logging
+
+#### Input Methods
+
+All via WhatsApp — no app needed:
+
+| Method | Example | What Happens |
+|--------|---------|--------------|
+| **Text** | "Sabzi 2000, delivery 500" | Logged as expenses |
+| **Photo** | Picture of notebook | OCR extracts entries |
+| **Voice** | "Sharma se 5000 mila" | Transcribed + logged |
+| **Forward** | Bank SMS | Auto-parsed |
+
+#### What Gets Tracked
+
+**Money In:**
+- Customer payments received
+- New orders/sales
+- Other income
+
+**Money Out:**
+- Daily expenses (groceries, supplies)
+- Utilities (gas, electricity)
+- Transport
+- Staff payments
+- Rent
+
+**Staff:**
+- Who works for you
+- Their salary and schedule
+- Advances given
+- Payments made
+
+---
+
+### 4.4 👥 PAYROLL: Staff Management
+
+#### Setup (One Time)
+
+```
+Owner: "3 staff hain"
+
+Agent: "Naam aur salary batao:
+        Example: Ramu 10000 monthly 1st"
+
+Owner: "Ramu 10000 1st
+        Sita 8000 1st
+        Bunty 500 daily"
+
+Agent: 
+✅ Staff saved:
+
+👤 Ramu - ₹10,000/month (Due: 1st)
+👤 Sita - ₹8,000/month (Due: 1st)
+👤 Bunty - ₹500/day
+
+Total monthly: ₹23,000 + Bunty daily
+Next salary: Dec 1 (4 days)
+```
+
+#### Ongoing Tracking
+
+**Advance Given:**
+```
+Owner: "Ramu ko 2000 advance diya"
+
+Agent:
+✅ Advance logged
+
+Ramu:
+• Advance: ₹2,000
+• Next salary: ₹10,000 - ₹2,000 = ₹8,000
+• Due: Dec 1
+```
+
+**Salary Paid:**
+```
+Owner: "Sita ki salary de di"
+
+Agent:
+✅ Salary paid
+
+Sita - December: ₹8,000 ✓
+
+Remaining this month:
+• Ramu: ₹8,000 (after advance)
+• Bunty: ₹3,500 pending
+```
+
+#### Salary Reminders (Proactive)
+
+3 days before salary day:
+```
+📅 *SALARY REMINDER*
+
+Due in 3 days (Dec 1):
+• Ramu: ₹8,000 (after ₹2K advance)
+• Sita: ₹8,000
+• Total: ₹16,000
+
+Your projected cash on Dec 1: ₹19,000
+Status: ✅ Covered
+
+(Bunty daily: ₹1,500 pending this week)
+```
+
+If short:
+```
+📅 *SALARY ALERT* ⚠️
+
+Due in 3 days (Dec 1):
+• Total due: ₹16,000
+• Projected cash: ₹12,000
+• Shortfall: ₹4,000
+
+💡 To cover this:
+• Pending from customers: ₹17,000
+• Need to collect: ₹4,000+ by Thursday
+```
+
+---
+
+### 4.5 👁️ KEY METRICS: What to Watch
+
+#### The "Watch List" (In Every Brief)
+
+Instead of drowning in data, FlowForge shows **3 things to watch**:
+
+```
+👁️ *WATCH THIS WEEK*
+
+1. 🔴 Cash on Friday
+   Salary day, you'll be ₹4K short
+   → Collect from TechPark or Kumar
+
+2. 🟡 TechPark payment
+   ₹12,000 pending, 15 days old
+   → Usually pays by day 20
+
+3. 🟢 Profit looking good
+   34% margin this month
+   → 3% better than October
+```
+
+#### Metric Categories
+
+| Category | Metrics Tracked |
+|----------|-----------------|
+| **Cash** | Current balance, runway days, upcoming crunch |
+| **Revenue** | This week, this month, vs last period |
+| **Expenses** | By category, vs budget, unusual spikes |
+| **Profit** | Margin %, absolute amount, trend |
+| **Receivables** | Total pending, aging, problem accounts |
+| **Payroll** | Upcoming dates, amounts, coverage |
+
+---
+
+### 4.6 💬 SIMPLE REMINDERS (Not Complex)
+
+**Philosophy:** Reminders are a small utility, not the main product.
+
+#### How It Works
+
+Owner asks → Agent sends → Done.
+
+```
+Owner: "TechPark ko remind kar do"
+
+Agent:
+✅ Reminder sent to TechPark
+
+"Hi, friendly reminder that ₹12,000 is pending 
+for tiffin service. UPI: priya@upi"
+
+I'll let you know when they respond.
+```
+
+**That's it.** No escalation ladders, no automation levels, no complex flows.
+
+#### Optional: Auto-Reminders
+
+If owner enables:
+- Agent sends ONE polite reminder after 7 days
+- Owner is notified
+- No further automation
+
+```
+Settings: Auto-reminder after 7 days? [Yes/No]
+```
+
+---
+
+## 5. User Flows
+
+### 5.1 Onboarding (5 minutes)
+
+```
+STEP 1: Hello
+─────────────
+Owner: "Hi"
+Agent: "🙏 Main FlowForge — aapka business assistant.
+        Naam aur business batao."
+Owner: "Priya, tiffin service"
+
+STEP 2: Current Cash
+────────────────────
+Agent: "Abhi kitna cash hai business mein? (Roughly)"
+Owner: "25000 ke around"
+
+STEP 3: Staff (Optional)
+────────────────────────
+Agent: "Staff hai? Kitne log, kitni salary?"
+Owner: "Ramu 10000, Sita 8000, monthly 1st ko"
+Agent: "✅ Saved. Monthly salary: ₹18,000 on 1st"
+
+STEP 4: Pending Payments (Optional)
+───────────────────────────────────
+Agent: "Customers se kuch pending hai? 
+        Notebook ka photo bhej do ya list likh do."
+Owner: [Sends photo]
+Agent: "₹33,000 pending from 5 customers. ✅ Saved"
+
+STEP 5: Done
+────────────
+Agent: "🎉 Setup complete!
+
+Your Business:
+• Cash: ₹25,000
+• Pending: ₹33,000  
+• Staff: 2 (₹18,000/month)
+• Next salary: Dec 1
+
+Kal subah 9 baje pehla business update milega!"
+```
+
+---
+
+### 5.2 Morning Brief (Daily, 9 AM)
+
+```
+☀️ *GOOD MORNING PRIYA*
+
+💰 *CASH POSITION*
+In hand: ₹24,500
+Pending: ₹33,000
+
+📊 *HEALTH SCORE: 72/100* 
+Good, but watch cash flow
+
+📅 *NEXT 3 DAYS*
+Today:    ₹24,500 ✓
+Tomorrow: ₹22,000 ✓ (supplies)
+Friday:   ₹15,000 🔴 (salary day!)
+
+👁️ *WATCH TODAY*
+1. Collect ₹8K before Friday (salary gap)
+2. TechPark ₹12K pending 15 days
+
+📈 *THIS MONTH*
+Revenue: ₹92,000
+Expenses: ₹61,000
+Profit: ₹31,000 (34%) ✅
+
+Have a great day! 🙏
+```
+
+---
+
+### 5.3 Logging Transactions
+
+**Quick Expense:**
+```
+Owner: "Sabzi 1800 gas 900"
+
+Agent: ✅ Logged
+• Sabzi: ₹1,800 (Supplies)
+• Gas: ₹900 (Utilities)
+
+Today's spend: ₹2,700
+Cash remaining: ₹21,800
+```
+
+**Payment Received:**
+```
+Owner: "Sharma ne 8000 diya"
+
+Agent: 💰 Received!
+• Sharma: ₹8,000
+
+Cash: ₹29,800 (was ₹21,800)
+Pending: ₹25,000 (was ₹33,000)
+```
+
+**Salary Paid:**
+```
+Owner: "Ramu salary done"
+
+Agent: ✅ Salary paid
+• Ramu: ₹10,000 (December)
+
+Remaining salaries: Sita ₹8,000 (Dec 1)
+```
+
+---
+
+### 5.4 Asking Questions
+
+**"Status batao"**
+```
+Owner: "Status batao"
+
+Agent:
+📊 *BUSINESS STATUS*
+━━━━━━━━━━━━━━━━━━
+
+💰 Cash: ₹24,500
+📥 Pending: ₹33,000
+📤 Due: ₹18,000 (salaries in 4 days)
+
+💚 Health: 72/100
+
+📈 November:
+• Revenue: ₹92,000
+• Profit: ₹31,000 (34%)
+
+⚠️ Friday: ₹3K salary gap
+```
+
+**"Next week kaisa dikhta hai"**
+```
+Owner: "Next week kaisa dikhta hai"
+
+Agent:
+📅 *NEXT 7 DAYS*
+
+Today (Thu): ₹24,500  ✓
+Fri:         ₹15,500  🔴 Salary!
+Sat:         ₹28,000  ✓ Weekend boost
+Sun:         ₹27,000  ✓
+Mon:         ₹25,500  ✓
+Tue:         ₹23,000  ✓
+Wed:         ₹21,500  ✓
+
+🔴 Friday gap: ₹3,000 short for salary
+
+Suggestion: Collect from TechPark (₹12K pending)
+```
+
+**"Profit kitna hua"**
+```
+Owner: "Profit kitna hua"
+
+Agent:
+📈 *NOVEMBER P&L*
+
+Revenue:   ₹92,000
+━━━━━━━━━━━━━━━━━━
+Expenses:
+• Supplies:   ₹28,000 (30%)
+• Staff:      ₹18,000 (20%)
+• Utilities:  ₹8,500 (9%)
+• Transport:  ₹4,200 (5%)
+• Other:      ₹2,300 (2%)
+━━━━━━━━━━━━━━━━━━
+Total:     ₹61,000 (66%)
+━━━━━━━━━━━━━━━━━━
+*PROFIT:   ₹31,000 (34%)*
+
+vs October: ↑ ₹4,000 better 🎉
+```
+
+**"Kaun kitna dena hai"**
+```
+Owner: "Kaun kitna dena hai"
+
+Agent:
+📋 *PENDING PAYMENTS*
+
+Total: ₹33,000
+
+• TechPark:  ₹12,000 (15 days) ⚠️
+• Kumar:     ₹8,000 (10 days)
+• Sharma:    ₹5,000 (5 days)
+• Mehta:     ₹4,500 (3 days)
+• Amit:      ₹3,500 (2 days)
+
+Remind karna hai? Name bolo.
+```
+
+---
+
+### 5.5 Proactive Alerts
+
+**Cash Crunch Warning (3 days before):**
+```
+⚠️ *CASH ALERT*
+
+Salary day in 3 days (Dec 1):
+
+💰 Projected cash: ₹15,000
+💸 Salary due: ₹18,000
+📉 Gap: ₹3,000
+
+*To fix this:*
+Pending collections: ₹33,000
+Even ₹3K will cover you.
+
+Remind TechPark? (₹12K pending)
+[Yes] [No, I'll handle]
+```
+
+**Unusual Expense Alert:**
+```
+💡 *HEADS UP*
+
+Transport this week: ₹5,200
+Your usual: ₹2,500
+
+That's 2x more than normal.
+Just flagging in case unexpected.
+```
+
+**Weekly Health Update (Sundays):**
+```
+📊 *WEEKLY SUMMARY*
+
+Week of Nov 22-28:
+
+💰 Cash Change: ₹24,500 → ₹26,000 (↑₹1,500)
+📥 Collected: ₹18,000
+📤 Spent: ₹16,500
+💚 Health Score: 72 → 74 (↑2)
+
+*What went well:*
+✓ Profit margin at 34%
+✓ 3 customers paid on time
+
+*Watch next week:*
+⚠️ Salary day Friday
+⚠️ TechPark still pending ₹12K
+```
+
+---
+
+### 5.6 Evening Wrap (Daily, 8 PM)
+
+```
+🌙 *TODAY'S WRAP*
+
+📥 In: ₹8,000 (Sharma)
+📤 Out: ₹2,700 (supplies + gas)
+💰 End of day: ₹29,800
+
+📅 Tomorrow:
+Expected expenses: ~₹2,500
+Salary reminder: 2 days left
+
+💚 Health: 74/100 (↑2 from morning)
+
+Good night! 🌙
+```
+
+---
+
+## 6. Agent Intelligence
+
+### 6.1 What the Agent Knows
+
+```
+KNOWLEDGE BASE
+━━━━━━━━━━━━━━
+
+CURRENT STATE
+├── Cash position (last known)
+├── Pending receivables (who, how much, how old)
+├── Staff & salaries (who, how much, when due)
+└── Recent transactions (last 30 days)
+
+PATTERNS (Learned)
+├── Average daily revenue by weekday
+├── Average daily expenses by weekday
+├── Customer payment reliability
+├── Seasonal trends
+└── Expense patterns by category
+
+COMMITMENTS (Known)
+├── Salary dates & amounts
+├── Rent date & amount
+└── Other recurring expenses
+
+PROJECTIONS (Calculated)
+├── Daily cash for next 30 days
+├── Risk days identified
+└── Gap analysis for commitments
+```
+
+### 6.2 Projection Model
+
+```
+For each future day D:
+
+Cash[D] = Cash[D-1] 
+          + Expected_Revenue[D]
+          - Expected_Expenses[D]
+          - Fixed_Commitments[D]
+          + Likely_Collections[D]
+
+Where:
+• Expected_Revenue = Historical average for that weekday
+• Expected_Expenses = Historical average for that weekday
+• Fixed_Commitments = Known salaries, rent on specific dates
+• Likely_Collections = Pending × Customer_Reliability_Score
+
+Alert if:
+• Cash[D] < 0 → 🔴 Critical
+• Cash[D] < Weekly_Average_Expense → 🟡 Caution
+• Cash[D] < Fixed_Commitment[D] → ⚠️ Warning
+```
+
+### 6.3 Alert Triggers
+
+| Alert | Trigger | When Sent |
+|-------|---------|-----------|
+| **Cash Crunch** | Projected cash < commitment | 3 days before |
+| **Salary Gap** | Cash < salary on due date | 5, 3, 1 days before |
+| **Large Overdue** | Single receivable > 14 days | Once |
+| **Expense Spike** | Category > 2x average | Immediate |
+| **Revenue Dip** | Weekly revenue < 70% of normal | Sunday |
+| **Health Drop** | Score drops > 10 points | Daily brief |
+
+---
+
+## 7. Data Model
+
+### Entities Overview
+
+```
+OWNER
+├── id, phone, name, business_name, business_type
+├── upi_id, language, timezone
+├── current_cash (last known)
+├── settings (brief times, auto-remind)
+└── created_at, updated_at
+
+STAFF
+├── id, owner_id, name
+├── salary_amount, salary_type (monthly/daily/weekly)
+├── payment_day (1-31 for monthly)
+├── advance_balance
+└── created_at
+
+CUSTOMER
+├── id, owner_id, name, phone (optional)
+├── reliability_score (0-100)
+├── avg_days_to_pay
+└── total_lifetime_value
+
+TRANSACTION
+├── id, owner_id
+├── type (income/expense/salary/advance)
+├── category (auto-detected)
+├── amount, description
+├── related_customer_id (nullable)
+├── related_staff_id (nullable)
+├── source (text/photo/voice)
+└── created_at
+
+RECEIVABLE
+├── id, owner_id, customer_id
+├── amount, amount_paid
+├── status (pending/partial/paid)
+├── due_date, age_days
+└── created_at, paid_at
+
+PROJECTION
+├── id, owner_id, date
+├── projected_cash
+├── expected_in, expected_out
+├── fixed_commitments (json)
+├── confidence (high/medium/low)
+└── generated_at
+
+ALERT
+├── id, owner_id
+├── type, severity
+├── message, related_date
+├── status (pending/sent/acknowledged)
+└── created_at
+```
+
+---
+
+## 8. Technical Architecture
+
+### System Overview
+
+```
+┌────────────────────────────────────────────────────────────┐
+│                                                            │
+│  WHATSAPP ←──────────→ NEXT.JS APP ←───→ SUPABASE         │
+│                        (Vercel)           (PostgreSQL)     │
+│                            │                               │
+│                            ├───→ Google Vision (OCR)       │
+│                            ├───→ Claude API (LLM)          │
+│                            └───→ Trigger.dev (Cron)        │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
+
+### Trigger.dev Scheduled Jobs
+
+| Job | Schedule | Purpose |
+|-----|----------|---------|
+| `morning-brief` | 9:00 AM | Send daily business snapshot |
+| `evening-wrap` | 8:00 PM | Send day's summary |
+| `projection-refresh` | Every 6 hours | Recalculate projections |
+| `alert-check` | Every 3 hours | Check for warning conditions |
+| `salary-reminder` | 9:00 AM (when due) | Remind about upcoming salaries |
+| `weekly-summary` | Sunday 10 AM | Send weekly health report |
+
+### Key Services
+
+| Service | Purpose |
+|---------|---------|
+| **Message Router** | Parse WhatsApp messages, route to handlers |
+| **Transaction Logger** | Create transactions from any input format |
+| **Projection Engine** | Calculate future cash positions |
+| **Health Calculator** | Compute health score from metrics |
+| **Alert Generator** | Identify and create alerts |
+| **Brief Composer** | Generate morning/evening messages |
+| **OCR Service** | Extract data from photos |
+| **LLM Service** | Intent parsing, natural language |
+
+---
+
+## 9. MVP Scope (Hackathon - 24 Hours)
+
+### P0: Must Build
+
+| Feature | Description | Hours |
+|---------|-------------|-------|
+| WhatsApp webhook | Receive/send messages | 2 |
+| Basic onboarding | Name, cash, staff | 2 |
+| Transaction logging | Text input for income/expense | 2 |
+| Staff setup | Add staff + salary dates | 1 |
+| Morning brief | Daily snapshot | 2 |
+| 7-day projection | Cash forecast | 3 |
+| Status query | "Status batao" response | 1 |
+| Salary alert | Warn before salary day | 2 |
+| **Total P0** | | **15h** |
+
+### P1: Should Build
+
+| Feature | Description | Hours |
+|---------|-------------|-------|
+| Notebook OCR | Photo → transactions | 3 |
+| Health score | Calculate and show | 2 |
+| Evening wrap | Day summary | 1 |
+| Simple reminder | "Remind X" one-off | 1 |
+
+### Demo Data
+
+Pre-load for demo:
+- Priya's Tiffin Service
+- 2 weeks of transactions
+- 3 staff members
+- 5 customers with pending amounts
+- One cash crunch scenario (salary day in 3 days)
+
+---
+
+## 10. Demo Script (4 Minutes)
+
+### Opening (30 sec)
+
+> "Meet Priya. Tiffin service, ₹1 lakh revenue. But she never knows if she'll have cash for salaries. She doesn't know if she's profitable. She can't see her future. Until now."
+
+### The Morning Brief (45 sec)
+
+> "Every morning, Priya gets this..."
+
+*Show morning brief*
+
+> "Cash position. Health score. And most importantly — what the next week looks like. See that red flag on Friday? That's salary day. She's going to be short. The agent saw it coming."
+
+### The Projection (60 sec)
+
+> "Let's zoom in..."
+
+*Ask: "Next week kaisa hai"*
+
+> "Day by day. When she'll have money. When she won't. Friday is the problem — ₹3K short for salaries. But the agent doesn't just warn her — it tells her how to fix it: TechPark owes ₹12K. One collection solves it."
+
+### Logging + Payroll (45 sec)
+
+> "She logs expenses naturally..."
+
+*Type: "Sabzi 2000, Ramu salary done"*
+
+> "Everything tracked. The agent knows Ramu is paid, Sita still pending. No spreadsheets, no apps. Just chat."
+
+### The Health Score (30 sec)
+
+> "And every week, a single number..."
+
+*Show health score*
+
+> "72 out of 100. Good, but watch cash flow. Better than last month. She never knew her business was healthy. Now she does."
+
+### Close (30 sec)
+
+> "This isn't expense tracking. It's not a ledger. It's the answer to the question every business owner has: What does tomorrow look like?"
+
+> "63 million MSMEs. Zero visibility into their future. We're changing that — one WhatsApp message at a time."
+
+---
+
+## 11. Success Metrics
+
+| Metric | Definition | Target |
+|--------|------------|--------|
+| **Clarity** | Owner understands their business health | 80% can state health score |
+| **Prediction Accuracy** | Cash projections vs actuals | Within 15% |
+| **Crisis Prevention** | Cash crunches avoided | 70% of alerts actioned |
+| **Engagement** | Daily brief opened/acknowledged | 60% daily |
+| **Time Saved** | Manual tracking replaced | 5+ hours/week |
+
+---
+
+## 12. Future Roadmap
+
+### Phase 2: Smarter Predictions
+- ML-based revenue forecasting
+- Customer payment predictions
+- Seasonal pattern recognition
+- Bank SMS auto-parsing
+
+### Phase 3: Business Growth
+- Profit optimization suggestions
+- Expense reduction insights
+- Pricing recommendations
+- Growth benchmarking
+
+### Phase 4: Ecosystem
+- GST filing preparation
+- Loan readiness score
+- Supplier credit scoring
+- Insurance recommendations
+
+---
+
+## Appendix: Why This Wins
+
+### vs Khatabook/Vyapar
+
+| They Show | We Show |
+|-----------|---------|
+| What happened (past) | What will happen (future) |
+| Raw data | Insights + actions |
+| You pull info | We push alerts |
+| App-based | WhatsApp-native |
+| Complex features | Simple, focused |
+
+### The Insight
+
+> "Tracking what happened is easy. Predicting what will happen — and helping you change it — that's the value."
+
+---
+
+*Version 3.0 — Business Intelligence Focus*  
+*Hero Feature: Future Projections*  
+*November 2025*

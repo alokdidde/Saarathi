@@ -1,0 +1,149 @@
+// Saarathi - WhatsApp Business Intelligence for Micro-Businesses
+// Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Business owner profile
+model Owner {
+  id             String   @id @default(cuid())
+  phone          String   @unique
+  name           String?
+  businessName   String?
+  businessType   String?
+  currentCash    Float    @default(0)
+  language       String   @default("hi")
+  onboardingStep String   @default("START") // START, NAME, CASH, STAFF, PENDING, COMPLETE
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  staff        Staff[]
+  customers    Customer[]
+  transactions Transaction[]
+  receivables  Receivable[]
+  projections  Projection[]
+  alerts       Alert[]
+}
+
+// Staff members and their salary info
+model Staff {
+  id             String   @id @default(cuid())
+  ownerId        String
+  name           String
+  salaryAmount   Float
+  salaryType     String   @default("monthly") // monthly, daily, weekly
+  paymentDay     Int?     // 1-31 for monthly, null for daily
+  advanceBalance Float    @default(0)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  owner        Owner         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([ownerId])
+}
+
+// Customers with payment tracking
+model Customer {
+  id               String   @id @default(cuid())
+  ownerId          String
+  name             String
+  phone            String?
+  reliabilityScore Int      @default(50) // 0-100, how reliably they pay
+  avgDaysToPay     Int      @default(7)
+  totalLifetimeValue Float  @default(0)
+  createdAt        DateTime @default(now())
+
+  owner        Owner         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  receivables  Receivable[]
+  transactions Transaction[]
+
+  @@index([ownerId])
+}
+
+// All financial transactions
+model Transaction {
+  id          String   @id @default(cuid())
+  ownerId     String
+  type        String   // income, expense, salary, advance
+  category    String?  // supplies, utilities, transport, salary, etc.
+  amount      Float
+  description String?
+  customerId  String?
+  staffId     String?
+  source      String   @default("text") // text, photo, voice, sms
+  createdAt   DateTime @default(now())
+
+  owner    Owner     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id])
+  staff    Staff?    @relation(fields: [staffId], references: [id])
+
+  @@index([ownerId])
+  @@index([ownerId, createdAt])
+  @@index([ownerId, type])
+}
+
+// Pending payments from customers
+model Receivable {
+  id         String    @id @default(cuid())
+  ownerId    String
+  customerId String
+  amount     Float
+  amountPaid Float     @default(0)
+  status     String    @default("pending") // pending, partial, paid
+  dueDate    DateTime?
+  notes      String?
+  createdAt  DateTime  @default(now())
+  paidAt     DateTime?
+
+  owner    Owner    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id])
+
+  @@index([ownerId])
+  @@index([ownerId, status])
+}
+
+// Daily cash flow projections
+model Projection {
+  id            String   @id @default(cuid())
+  ownerId       String
+  date          DateTime @db.Date
+  projectedCash Float
+  expectedIn    Float    @default(0)
+  expectedOut   Float    @default(0)
+  commitments   Json?    // { salaries: [{name, amount}], rent: amount }
+  confidence    String   @default("medium") // high, medium, low
+  flags         String[] // risk flags: "salary_due", "low_cash", "negative"
+  generatedAt   DateTime @default(now())
+
+  owner Owner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, date])
+  @@index([ownerId])
+}
+
+// Proactive alerts for the business owner
+model Alert {
+  id          String    @id @default(cuid())
+  ownerId     String
+  type        String    // cash_crunch, salary_gap, expense_spike, overdue_payment
+  severity    String    // critical, warning, info
+  title       String
+  message     String
+  relatedDate DateTime?
+  metadata    Json?     // Additional context data
+  status      String    @default("pending") // pending, sent, acknowledged, dismissed
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+
+  owner Owner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@index([ownerId, status])
+}
