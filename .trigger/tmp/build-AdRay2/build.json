@@ -1,0 +1,64 @@
+{
+  "contentHash": "3b738216a8fbb149b3b38e7440ef83f3",
+  "runtime": "node",
+  "environment": "dev",
+  "packageVersion": "4.1.2",
+  "cliPackageVersion": "4.1.2",
+  "target": "dev",
+  "files": [
+    {
+      "entry": "src/trigger/scheduled-jobs.ts",
+      "out": "C:\\Projects\\saarathi\\.trigger\\tmp\\build-AdRay2\\Projects\\saarathi\\src\\trigger\\scheduled-jobs.mjs"
+    }
+  ],
+  "sources": {
+    "src/trigger/scheduled-jobs.ts": {
+      "contents": "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",
+      "contentHash": "2e14b18abf22fb134f831c7f90306eb5"
+    },
+    "trigger.config.ts": {
+      "contents": "eJxtUk1P3TAQvOdXrHwCKXkJRVUlvwsVcECCGzeEKhNvwvb5I7I3UQrKf6+e8/Fo4eI4MzuetXfIdj4wvIPGhhxee9dQCxM0wVsQVxyobTHsNA5l1Aexz2gVdIGiVbcjo4vk3deal56MLnEtiuWsEvsswzEdpLFRveF//M/eM4Au+N9YswRx3P2KjcLAQzce2PboraM/WuQZQOgdk0UJwnmNCTK+vccBjQRBrvEJs2q86YNi8k7CZVXlUJbwHSy5njEeaegwAKt4yAA0hSjhScRQl8t9xHNyQw6EUcKxRQB06sWgvnM3OEholImYJ2K51lqX/H8yo+04SrjMV5TcI1n0Pd+5hyjhoqqq/KT4xG1ko2r2QcK3FQjKaW/pDSVw6JcupuMnLWkQW9cjY3DKSHha1OJqHkxZG0LHIv8aL5bHLnomEz9XKa06xlB07YmbA1OQK/gVC0taG1zY53xrZ47HqaH/0nW2PiNArF/RqhSL5Dn/75Zg5VvdgCGmYYsfu2p3sTHT+QfzKc+m8332F9Iv668=",
+      "contentHash": "1f49b85cb01bca019f53af7b0771daa0"
+    },
+    "tsconfig.json": {
+      "contents": "eJxdUctqwzAQvPsrhI4mte4+FUoPDQ2FXoMpsrU0avRCD9cl+N/LylYb+6TVzOwwu3urCKGD1U4q8G8uSmsCbcmtIoQQqmRPW3Kmwmp6IPg0MoLnvQL8QzAwRdodFjVXyn4fsT36BCsYrtK9yv7pAsN1x0Qvh7jFjH3WcodBOFmRFLyYCN66LakzRdu/MBv8HYJVCYdCRZ+MUOCLxCM5wjFYcyoud84yWMUjiIXbTfUVJnR0HgL4EYqlNIMHDSZytdU7lT5l3uw5A2Td8DI013mCnH+F5/yWzToeL/9nIYQ+sjofpmHBD6ymXVWaZmzBICoJyBq0fQAzNqKJAc9W16zelhPWDQpZ/HEQWJHkABSmOzcr4EOvO+mqufoFay2i9Q==",
+      "contentHash": "3bd7a3770c6b44dbcaab1d2f175db8bd"
+    },
+    "package.json": {
+      "contents": "eJx9U8ty4yAQvPsrKB1y2QiDQK+cctjr/oKrRjBSqEhIBdjZbCr/voVkyY7X2Rt09wzTM8PHjpDEwoDJE0k8gIPwYpLHiJ7QeTPaSDDKKVvQyZkThCgP7ogz5JUzU/DJE/nYEUJIovEUoyz+DiSeHxe4OZpeR2Jyxg9AOrToICB5eCCzdhGc1T6AC1ua5XamemMvzHw5E9Pog7E+QN/feSfZEfI5V6xxQqvRKoNXZT+DSb1+3XcQ8A3eY4ZDRhnl5Zp/VYwTWjCboJSbYHlyDxqmgC6dullUxiy3GtUbXHz8j0/d0QYzYHoMpvd31MGZrkNHNZ72Xr9GhaScZqvgXGceg9hWqB4D2nlKB17SjIqVMMM0upAam4YXTAejdY+bUbaqYucjymWM3YLPdivKi0tGh6AWm7z6gqV6HG7wP+O8IIfogIvrgZ1+3p/Ztf1twb404Dm8T+j3dtRnI+yGuVSd0+KGu1f8NXXHA/p1Pw83WKpG25ou/a57ow/K+6+RyzL8O/cApn8zVq8BgsorMhY4/8pl9pdGTqBeocNfYKFDN38SOw3PnNFMUvbDv0DOM8p421aAJW+k5HXNRFPkqmBtk2lVayFVWzVNgazQTDQaOc+wFVVbgpC6qJlUMpMNFEWDkCutWp5VNcsEa1pRt3VeMVkKLhnqWtWyaLEVWdUUmGeiAiFzSHafu79z/ziY",
+      "contentHash": "f7221b8c7cab2e84d177fda5086a3275"
+    }
+  },
+  "externals": [
+    {
+      "name": "@prisma/adapter-pg",
+      "version": "7.0.1"
+    },
+    {
+      "name": "@prisma/client-runtime-utils",
+      "version": "7.0.1"
+    },
+    {
+      "name": "import-in-the-middle",
+      "version": "1.11.0"
+    }
+  ],
+  "config": {
+    "project": "proj_sfaertvpxktmueomniyd",
+    "dirs": [
+      "src/trigger"
+    ]
+  },
+  "outputPath": "C:\\Projects\\saarathi\\.trigger\\tmp\\build-AdRay2",
+  "indexWorkerEntryPoint": "C:\\Projects\\saarathi\\.trigger\\tmp\\build-AdRay2\\Users\\aloka\\AppData\\Local\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-index-worker.mjs",
+  "runWorkerEntryPoint": "C:\\Projects\\saarathi\\.trigger\\tmp\\build-AdRay2\\Users\\aloka\\AppData\\Local\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-run-worker.mjs",
+  "configPath": "C:\\Projects\\saarathi\\.trigger\\tmp\\build-AdRay2\\Projects\\saarathi\\trigger.config.mjs",
+  "customConditions": [],
+  "deploy": {
+    "env": {}
+  },
+  "build": {},
+  "otelImportHook": {
+    "include": []
+  }
+}

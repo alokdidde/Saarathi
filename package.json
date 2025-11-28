@@ -7,16 +7,23 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma db push --force-reset && tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^2.0.17",
     "@ai-sdk/openai": "^2.0.74",
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "^7.0.1",
-    "@trigger.dev/sdk": "^4.1.2",
+    "@prisma/client-runtime-utils": "^7.0.1",
+    "@trigger.dev/sdk": "4.1.2",
     "ai": "^5.0.104",
     "dotenv": "^17.2.3",
+    "import-in-the-middle": "^2.0.0",
     "next": "14.2.33",
     "pg": "^8.16.3",
     "react": "^18",
@@ -24,6 +31,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
+    "@trigger.dev/build": "4.1.2",
     "@types/node": "^20",
     "@types/pg": "^8.15.6",
     "@types/react": "^18",
@@ -33,6 +41,8 @@
     "postcss": "^8",
     "prisma": "^7.0.1",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.20.6",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
 }

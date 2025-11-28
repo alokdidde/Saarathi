@@ -1,12 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import StateInspector from "./components/StateInspector";
+import ScenarioPanel from "./components/ScenarioPanel";
 
 interface Message {
   id: string;
   text: string;
   sender: "user" | "bot";
   timestamp: Date;
+  attachment?: {
+    type: "photo" | "contact";
+    data: string;
+    name?: string;
+  };
 }
 
 export default function SimulatorPage() {
@@ -14,7 +21,9 @@ export default function SimulatorPage() {
   const [input, setInput] = useState("");
   const [phone, setPhone] = useState("9876543210");
   const [isLoading, setIsLoading] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,25 +33,26 @@ export default function SimulatorPage() {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (messageText?: string) => {
+    const text = messageText || input;
+    if (!text.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: input,
+      text,
       sender: "user",
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    if (!messageText) setInput("");
     setIsLoading(true);
 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, message: input }),
+        body: JSON.stringify({ phone, message: text }),
       });
 
       const data = await response.json();
@@ -55,6 +65,7 @@ export default function SimulatorPage() {
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, botMessage]);
+        setRefreshTrigger((prev) => prev + 1);
       } else {
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
@@ -88,72 +99,134 @@ export default function SimulatorPage() {
     setMessages([]);
   };
 
+  const handleReset = async () => {
+    setIsLoading(true);
+    try {
+      await fetch("/api/seed", { method: "DELETE" });
+      setMessages([]);
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error("Failed to reset:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSeed = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/seed", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setMessages([
+          {
+            id: Date.now().toString(),
+            text: `✅ Demo data loaded!\n\nOwner: ${data.data.owner}\nPhone: ${data.data.phone}\nCash: ₹${data.data.cash.toLocaleString()}\nStaff: ${data.data.staff}\nCustomers: ${data.data.customers}\n\nTry "Status batao" to see the business status.`,
+            sender: "bot",
+            timestamp: new Date(),
+          },
+        ]);
+        setRefreshTrigger((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error("Failed to seed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePhotoUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const photoMessage: Message = {
+          id: Date.now().toString(),
+          text: "📷 Photo attached",
+          sender: "user",
+          timestamp: new Date(),
+          attachment: {
+            type: "photo",
+            data: reader.result as string,
+            name: file.name,
+          },
+        };
+        setMessages((prev) => [...prev, photoMessage]);
+
+        // Simulate bot response for photo
+        setTimeout(() => {
+          const botMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: "📷 Photo received! (OCR processing coming soon)\n\nFor now, please type the expense details:\nExample: \"Sabzi 500, daal 200\"",
+            sender: "bot",
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, botMessage]);
+        }, 500);
+      };
+      reader.readAsDataURL(file);
+    }
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-4 bg-emerald-600 text-white">
-          <h1 className="text-xl font-bold">Saarathi</h1>
-          <p className="text-sm opacity-80">WhatsApp Simulator</p>
+      {/* Left Panel - Scenarios */}
+      <div className="w-56 bg-white border-r border-gray-200 flex flex-col">
+        <div className="p-3 bg-emerald-600 text-white">
+          <h1 className="text-lg font-bold">Saarathi</h1>
+          <p className="text-xs opacity-80">Test Simulator</p>
         </div>
 
-        <div className="p-4 border-b border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="p-3 border-b border-gray-200">
+          <label className="block text-xs font-medium text-gray-700 mb-1">
             Phone Number
           </label>
           <input
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-            placeholder="Enter phone number"
+            className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm"
+            placeholder="Phone number"
           />
         </div>
 
-        <div className="p-4 flex-1">
-          <h3 className="font-medium text-gray-900 mb-2">Quick Commands</h3>
-          <div className="space-y-2">
-            {[
-              "Hi",
-              "Status batao",
-              "Next week kaisa hai",
-              "Sabzi 2000, gas 900",
-              "Profit kitna hua",
-              "Kaun kitna dena hai",
-              "Help",
-            ].map((cmd) => (
-              <button
-                key={cmd}
-                onClick={() => setInput(cmd)}
-                className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
-              >
-                {cmd}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="p-4 border-t border-gray-200">
-          <button
-            onClick={clearChat}
-            className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
-          >
-            Clear Chat
-          </button>
+        <div className="flex-1 overflow-hidden">
+          <ScenarioPanel
+            onSendMessage={sendMessage}
+            onReset={handleReset}
+            onSeed={handleSeed}
+            isLoading={isLoading}
+          />
         </div>
       </div>
 
-      {/* Chat Area */}
+      {/* Center Panel - Chat */}
       <div className="flex-1 flex flex-col">
         {/* Chat Header */}
-        <div className="bg-emerald-600 text-white px-6 py-4 flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-            <span className="text-emerald-600 text-xl">🤖</span>
+        <div className="bg-emerald-600 text-white px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center">
+              <span className="text-emerald-600 text-lg">🤖</span>
+            </div>
+            <div>
+              <h2 className="font-semibold text-sm">Saarathi Assistant</h2>
+              <p className="text-xs opacity-80">{phone}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-semibold">Saarathi Assistant</h2>
-            <p className="text-xs opacity-80">Always active</p>
-          </div>
+          <button
+            onClick={clearChat}
+            className="px-3 py-1 text-xs bg-emerald-700 hover:bg-emerald-800 rounded transition-colors"
+          >
+            Clear
+          </button>
         </div>
 
         {/* Messages */}
@@ -166,7 +239,8 @@ export default function SimulatorPage() {
           {messages.length === 0 && (
             <div className="text-center text-gray-500 mt-8">
               <p className="text-4xl mb-2">👋</p>
-              <p>Send &quot;Hi&quot; to start!</p>
+              <p className="text-sm">Click &quot;Load Demo&quot; to get started</p>
+              <p className="text-xs text-gray-400 mt-1">or send &quot;Hi&quot; to start fresh</p>
             </div>
           )}
 
@@ -176,12 +250,22 @@ export default function SimulatorPage() {
               className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] rounded-lg px-4 py-2 ${
+                className={`max-w-[75%] rounded-lg px-3 py-2 ${
                   msg.sender === "user"
                     ? "bg-emerald-500 text-white rounded-br-none"
                     : "bg-white text-gray-800 rounded-bl-none shadow-sm"
                 }`}
               >
+                {msg.attachment?.type === "photo" && (
+                  <div className="mb-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={msg.attachment.data}
+                      alt="Uploaded"
+                      className="max-w-[200px] rounded"
+                    />
+                  </div>
+                )}
                 <div className="whitespace-pre-wrap text-sm">{msg.text}</div>
                 <div
                   className={`text-xs mt-1 ${
@@ -219,8 +303,23 @@ export default function SimulatorPage() {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
-          <div className="flex gap-2">
+        <div className="bg-gray-50 px-3 py-2 border-t border-gray-200">
+          <div className="flex gap-2 items-center">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <button
+              onClick={handlePhotoUpload}
+              disabled={isLoading}
+              className="p-2 text-gray-500 hover:text-emerald-600 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
+              title="Attach photo"
+            >
+              📷
+            </button>
             <input
               type="text"
               value={input}
@@ -231,13 +330,25 @@ export default function SimulatorPage() {
               disabled={isLoading}
             />
             <button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-2 bg-emerald-500 text-white rounded-full text-sm font-medium hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-emerald-500 text-white rounded-full text-sm font-medium hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Send
+              ➤
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Right Panel - State Inspector */}
+      <div className="w-64 bg-white border-l border-gray-200 flex flex-col">
+        <div className="p-3 bg-gray-50 border-b border-gray-200">
+          <h3 className="font-semibold text-gray-900 text-sm">State Inspector</h3>
+          <p className="text-xs text-gray-500">Real-time data view</p>
+        </div>
+
+        <div className="flex-1 overflow-hidden">
+          <StateInspector phone={phone} refreshTrigger={refreshTrigger} />
         </div>
       </div>
     </div>
