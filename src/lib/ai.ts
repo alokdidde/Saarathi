@@ -1,12 +1,8 @@
-import { createGateway } from "@ai-sdk/gateway";
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
 
-// Create AI Gateway client
-const gateway = createGateway({
-  baseURL: "https://gateway.ai.cloudflare.com/v1",
-  apiKey: process.env.AI_GATEWAY_API_KEY,
-});
+// Model via Vercel AI Gateway (AI_GATEWAY_API_KEY env var is auto-detected)
+const model = "openai/gpt-4o-mini";
 
 // Intent schema for message classification
 export const IntentSchema = z.object({
@@ -75,7 +71,7 @@ If onboarding is not COMPLETE, classify as onboarding_response.`;
 
   try {
     const { object } = await generateObject({
-      model: gateway("openai/gpt-4o-mini"),
+      model,
       schema: IntentSchema,
       system: systemPrompt,
       prompt: message,
@@ -125,7 +121,7 @@ Examples:
 
   try {
     const { object } = await generateObject({
-      model: gateway("openai/gpt-4o-mini"),
+      model,
       schema: TransactionParseSchema,
       system: systemPrompt,
       prompt: message,
@@ -161,7 +157,7 @@ Examples:
 
   try {
     const { object } = await generateObject({
-      model: gateway("openai/gpt-4o-mini"),
+      model,
       schema: StaffParseSchema,
       system: systemPrompt,
       prompt: message,
@@ -180,7 +176,7 @@ export async function generateResponse(
 ): Promise<string> {
   try {
     const { text } = await generateText({
-      model: gateway("openai/gpt-4o-mini"),
+      model,
       system: `You are Saarathi, a friendly WhatsApp business assistant for Indian micro-business owners.
 Respond in a mix of Hindi and English (Hinglish) that feels natural.
 Keep responses concise and formatted for WhatsApp (use emojis sparingly, line breaks for readability).
