@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import StateInspector from "./components/StateInspector";
 import ScenarioPanel from "./components/ScenarioPanel";
+import BriefPanel from "./components/BriefPanel";
 
 interface Message {
   id: string;
@@ -24,6 +25,12 @@ export default function SimulatorPage() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Brief panel state
+  const [briefOpen, setBriefOpen] = useState(false);
+  const [briefTitle, setBriefTitle] = useState("");
+  const [briefContent, setBriefContent] = useState("");
+  const [briefLoading, setBriefLoading] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -176,6 +183,41 @@ export default function SimulatorPage() {
     }
   };
 
+  const handleOpenBrief = async (type: "morning" | "evening" | "weekly" | "health" | "profit") => {
+    setBriefOpen(true);
+    setBriefLoading(true);
+    setBriefContent("");
+
+    const titles: Record<string, string> = {
+      morning: "Morning Brief",
+      evening: "Evening Wrap",
+      weekly: "Weekly Summary",
+      health: "Health Score",
+      profit: "Profit & Loss",
+    };
+    setBriefTitle(titles[type]);
+
+    try {
+      const response = await fetch("/api/briefs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, type }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setBriefContent(data.content);
+      } else {
+        setBriefContent(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      setBriefContent(`Error generating brief: ${error}`);
+    } finally {
+      setBriefLoading(false);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Left Panel - Scenarios */}
@@ -203,6 +245,7 @@ export default function SimulatorPage() {
             onSendMessage={sendMessage}
             onReset={handleReset}
             onSeed={handleSeed}
+            onOpenBrief={handleOpenBrief}
             isLoading={isLoading}
           />
         </div>
@@ -351,6 +394,15 @@ export default function SimulatorPage() {
           <StateInspector phone={phone} refreshTrigger={refreshTrigger} />
         </div>
       </div>
+
+      {/* Brief Panel (slide-out) */}
+      <BriefPanel
+        isOpen={briefOpen}
+        onClose={() => setBriefOpen(false)}
+        title={briefTitle}
+        content={briefContent}
+        isLoading={briefLoading}
+      />
     </div>
   );
 }

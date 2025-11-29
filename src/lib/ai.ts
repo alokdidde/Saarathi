@@ -1,8 +1,9 @@
 import { generateObject, generateText } from "ai";
+import { gateway } from "@ai-sdk/gateway";
 import { z } from "zod";
 
-// Model via Vercel AI Gateway (AI_GATEWAY_API_KEY env var is auto-detected)
-const model = "openai/gpt-4o-mini";
+// Model via Vercel AI Gateway
+const model = gateway("openai/gpt-4o-mini");
 
 // Intent schema for message classification
 export const IntentSchema = z.object({

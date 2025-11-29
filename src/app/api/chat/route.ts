@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { routeMessage } from "@/services/message-router";
+import { runAgent } from "@/lib/agent";
 import { storeSimulatorMessage, getSimulatorResponses } from "@/lib/whatsapp";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { phone, message } = body;
+    const { phone, message, image } = body;
 
-    if (!phone || !message) {
+    if (!phone || (!message && !image)) {
       return NextResponse.json(
-        { error: "Phone and message are required" },
+        { error: "Phone and message/image are required" },
         { status: 400 }
       );
     }
@@ -17,21 +17,17 @@ export async function POST(request: NextRequest) {
     // Store incoming message for simulator history
     storeSimulatorMessage({
       from: phone,
-      text: message,
+      text: message || "[Photo]",
       timestamp: new Date(),
-      type: "text",
+      type: image ? "image" : "text",
     });
 
-    // Route the message and get response
-    const response = await routeMessage({
-      phone,
-      message,
-    });
+    // Run the AI agent to process the message (with optional image)
+    const response = await runAgent(phone, message || "", image);
 
     return NextResponse.json({
       success: true,
-      response: response.text,
-      ownerId: response.ownerId,
+      response,
     });
   } catch (error) {
     console.error("Chat API error:", error);
