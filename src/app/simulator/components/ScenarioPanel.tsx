@@ -5,6 +5,7 @@ interface ScenarioPanelProps {
   onReset: () => Promise<void>;
   onSeed: () => Promise<void>;
   onOpenBrief: (type: "morning" | "evening" | "weekly" | "health" | "profit") => void;
+  onClearChat: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -13,6 +14,7 @@ export default function ScenarioPanel({
   onReset,
   onSeed,
   onOpenBrief,
+  onClearChat,
   isLoading,
 }: ScenarioPanelProps) {
   const briefs = [
@@ -21,6 +23,34 @@ export default function ScenarioPanel({
     { label: "Weekly Summary", icon: "📊", type: "weekly" as const, description: "Week review" },
     { label: "Health Score", icon: "💚", type: "health" as const, description: "Business health" },
     { label: "Profit & Loss", icon: "📈", type: "profit" as const, description: "P&L report" },
+  ];
+
+  // Input type examples - different ways to log data
+  const inputTypes = [
+    {
+      label: "Text Input",
+      icon: "✏️",
+      description: "Sabzi 2000, delivery 500",
+      action: () => onSendMessage("Sabzi 2000, delivery 500"),
+    },
+    {
+      label: "Photo Caption",
+      icon: "📷",
+      description: "Notebook page with expenses",
+      action: () => onSendMessage("[Photo of notebook]\nYe dekho aaj ka hisab - sabzi 800, doodh 200, gas 1500"),
+    },
+    {
+      label: "Bank SMS",
+      icon: "🏦",
+      description: "Forwarded UPI credit",
+      action: () => onSendMessage("Forwarded: UPI/CR/Rs.5000 from SHARMA ENTERPRISES to A/c XX4521 on 29-Nov"),
+    },
+    {
+      label: "Voice Message",
+      icon: "🎤",
+      description: "Transcribed audio",
+      action: () => onSendMessage("[Voice Message]\nAaj Gupta ji ne 3000 diye cash mein aur Verma ji ka 2000 baaki hai abhi"),
+    },
   ];
 
   const scenarios = [
@@ -73,18 +103,6 @@ export default function ScenarioPanel({
       action: () => onSendMessage("staff ka kya haal hai"),
     },
     {
-      label: "Expense",
-      icon: "🧾",
-      description: "Log expense",
-      action: () => onSendMessage("aaj sabzi 500 aur auto 100"),
-    },
-    {
-      label: "Income",
-      icon: "💵",
-      description: "Payment received",
-      action: () => onSendMessage("sharma ne 5000 diye"),
-    },
-    {
       label: "Salary",
       icon: "💸",
       description: "Pay salary",
@@ -106,6 +124,35 @@ export default function ScenarioPanel({
       </div>
 
       <div className="flex-1 overflow-y-auto">
+        {/* Input Types Section */}
+        <div className="p-2 border-b border-gray-200">
+          <div className="px-2 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Input Types
+          </div>
+          <div className="space-y-1 mt-1">
+            {inputTypes.map((input, idx) => (
+              <button
+                key={idx}
+                onClick={input.action}
+                disabled={isLoading}
+                className="w-full text-left px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{input.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-purple-800 group-hover:text-purple-900">
+                      {input.label}
+                    </div>
+                    <div className="text-xs text-purple-600 truncate">
+                      {input.description}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Reports Section */}
         <div className="p-2 border-b border-gray-200">
           <div className="px-2 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -173,7 +220,14 @@ export default function ScenarioPanel({
         </div>
       </div>
 
-      <div className="p-3 border-t border-gray-200 bg-gray-50">
+      <div className="p-3 border-t border-gray-200 bg-gray-50 space-y-2">
+        <button
+          onClick={onClearChat}
+          disabled={isLoading}
+          className="w-full px-3 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-lg transition-colors disabled:opacity-50"
+        >
+          💬 Clear Chat
+        </button>
         <button
           onClick={onReset}
           disabled={isLoading}

@@ -147,3 +147,15 @@ model Alert {
   @@index([ownerId])
   @@index([ownerId, status])
 }
+
+// Simulator chat messages (for multi-device sync)
+model SimulatorMessage {
+  id         String   @id @default(cuid())
+  phone      String   // Links messages to a session by phone number
+  text       String
+  sender     String   // "user" | "bot"
+  attachment Json?    // { type: "photo"|"contact", data: string, name?: string }
+  createdAt  DateTime @default(now())
+
+  @@index([phone, createdAt])
+}
