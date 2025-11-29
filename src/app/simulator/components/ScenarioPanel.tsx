@@ -2,6 +2,7 @@
 
 interface ScenarioPanelProps {
   onSendMessage: (message: string) => void;
+  onSendImage: (imageUrl: string, caption?: string) => void;
   onReset: () => Promise<void>;
   onSeed: () => Promise<void>;
   onOpenBrief: (type: "morning" | "evening" | "weekly" | "health" | "profit") => void;
@@ -11,6 +12,7 @@ interface ScenarioPanelProps {
 
 export default function ScenarioPanel({
   onSendMessage,
+  onSendImage,
   onReset,
   onSeed,
   onOpenBrief,
@@ -34,10 +36,11 @@ export default function ScenarioPanel({
       action: () => onSendMessage("Sabzi 2000, delivery 500"),
     },
     {
-      label: "Photo Caption",
-      icon: "📷",
-      description: "Notebook page with expenses",
-      action: () => onSendMessage("[Photo of notebook]\nYe dekho aaj ka hisab - sabzi 800, doodh 200, gas 1500"),
+      label: "Notebook Photo",
+      icon: "📓",
+      description: "Real expense photo (OCR)",
+      action: () => onSendImage("/demo-expenses.jpg"),
+      highlight: true,
     },
     {
       label: "Bank SMS",
@@ -135,15 +138,23 @@ export default function ScenarioPanel({
                 key={idx}
                 onClick={input.action}
                 disabled={isLoading}
-                className="w-full text-left px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
+                className={`w-full text-left px-3 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed group ${
+                  "highlight" in input && input.highlight
+                    ? "bg-amber-50 hover:bg-amber-100 border border-amber-300"
+                    : "bg-purple-50 hover:bg-purple-100 border border-purple-200"
+                }`}
               >
                 <div className="flex items-center gap-2">
                   <span className="text-lg">{input.icon}</span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-purple-800 group-hover:text-purple-900">
+                    <div className={`text-sm font-medium ${
+                      "highlight" in input && input.highlight ? "text-amber-800" : "text-purple-800"
+                    }`}>
                       {input.label}
                     </div>
-                    <div className="text-xs text-purple-600 truncate">
+                    <div className={`text-xs truncate ${
+                      "highlight" in input && input.highlight ? "text-amber-600" : "text-purple-600"
+                    }`}>
                       {input.description}
                     </div>
                   </div>

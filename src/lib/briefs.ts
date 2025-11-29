@@ -169,32 +169,91 @@ async function getBusinessData(ownerId: string) {
 export async function generateMorningBrief(ownerId: string): Promise<string> {
   const data = await getBusinessData(ownerId);
 
-  const prompt = `Generate a morning business brief in Hinglish (Hindi + English mix) for a WhatsApp message.
+  // Calculate 7-day projection with daily details
+  const now = new Date();
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  // Get staff salary schedule
+  const salaryByDay: Record<number, number> = {};
+  for (const s of data.staff) {
+    const day = s.paymentDay || 1;
+    salaryByDay[day] = (salaryByDay[day] || 0) + (s.salaryAmount - s.advanceBalance);
+  }
+
+  // Calculate daily expense average
+  const dailyExpense = data.monthExpenses / Math.max(now.getDate(), 1);
+
+  // Build 7-day projection data
+  let runningCash = data.currentCash;
+  const projections = [];
+  let problemDay = null;
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(now);
+    date.setDate(date.getDate() + i);
+    const dayOfMonth = date.getDate();
+    const dayName = dayNames[date.getDay()];
+    const salaryDue = salaryByDay[dayOfMonth] || 0;
+
+    runningCash -= dailyExpense;
+    if (salaryDue > 0) runningCash -= salaryDue;
+
+    const isProblem = runningCash < 0;
+    if (isProblem && !problemDay) {
+      problemDay = { day: dayName, salaryDue, cashBefore: runningCash + salaryDue + dailyExpense, shortfall: Math.abs(runningCash) };
+    }
+
+    projections.push({
+      day: dayName,
+      cash: Math.round(runningCash),
+      hasSalary: salaryDue > 0,
+      salaryAmount: salaryDue,
+      isProblem,
+    });
+  }
+
+  // Get oldest pending receivables
+  const oldestReceivables = data.receivables.slice(0, 3).map(r => ({
+    name: r.customer?.name || "Customer",
+    amount: r.amount - (r.amountPaid || 0),
+    daysOld: Math.floor((now.getTime() - r.createdAt.getTime()) / (1000 * 60 * 60 * 24)),
+  }));
+
+  const prompt = `Generate a morning cash flow forecast in Hinglish for WhatsApp. This is the HERO feature - a 7-day look-ahead showing exactly when money problems will hit.
 
 BUSINESS DATA:
 - Owner: ${data.owner?.name}
-- Business: ${data.owner?.businessName}
-- Cash in hand: ₹${data.currentCash.toLocaleString("en-IN")}
-- Pending collections: ₹${data.pendingTotal.toLocaleString("en-IN")}
-- Health Score: ${data.healthScore.score}/100 (${data.healthScore.status})
-- This month income: ₹${data.monthIncome.toLocaleString("en-IN")}
-- This month expenses: ₹${data.monthExpenses.toLocaleString("en-IN")}
-- Staff payroll: ₹${data.monthlyPayroll.toLocaleString("en-IN")}/month
-- Next 3 days projection: ${data.next3Days.map(d => `${d.day}: ₹${d.amount} (${d.flag})`).join(", ")}
-- Top pending: ${data.receivables.slice(0, 3).map(r => `${r.customer?.name}: ₹${r.amount - (r.amountPaid || 0)}`).join(", ")}
+- Current cash: ₹${data.currentCash.toLocaleString("en-IN")}
+- Daily avg expense: ₹${Math.round(dailyExpense).toLocaleString("en-IN")}
+- Total monthly salary: ₹${data.monthlyPayroll.toLocaleString("en-IN")}
 
-FORMAT (use emojis, keep it concise, WhatsApp style):
-☀️ GOOD MORNING {name}
+7-DAY PROJECTION:
+${projections.map(p => `${p.day}: ₹${p.cash.toLocaleString("en-IN")} ${p.hasSalary ? `(salary ₹${p.salaryAmount})` : ""} ${p.isProblem ? "⚠️ PROBLEM" : "OK"}`).join("\n")}
 
-💰 Cash position
-📊 Health score
-📅 Next 3 days preview
-👁️ 1-2 things to watch today
+${problemDay ? `PROBLEM DAY: ${problemDay.day} - Need ₹${problemDay.salaryDue} for salary, only ₹${Math.max(0, problemDay.cashBefore)} available, ₹${problemDay.shortfall} short` : "No problem days this week"}
 
-Keep it warm, helpful, under 200 words.`;
+PENDING COLLECTIONS (oldest first):
+${oldestReceivables.map(r => `${r.name}: ₹${r.amount.toLocaleString("en-IN")} pending for ${r.daysOld} days`).join("\n") || "None"}
+
+INSTRUCTIONS FOR PRESENTATION:
+1. Show a 7-day forecast as a simple list - each day on one line with: day name, status emoji, projected cash, brief note about what's happening (expenses, salary, etc.)
+2. Use simple status indicators: ✅ for OK days, ⚠️ for tight days, 🔴 for problem days, ↗️ for recovery/weekend days
+3. If there's a PROBLEM DAY (cash goes negative), highlight it separately:
+   - Use a blank line before/after to separate it visually
+   - Call out which day is the problem
+   - Show how much is needed (salary/expenses)
+   - Show how much cash will be available
+   - Show the SHORTFALL amount prominently
+4. End with ACTION ITEMS: which customers to follow up with to collect money, showing name, amount, and how many days overdue
+5. Use Hinglish naturally - mix Hindi phrases like "sab theek", "thoda tight", "dikkat wala din", "paisa kam padega"
+6. Keep it scannable - owner should understand cash situation in 5 seconds
+7. Use blank lines to separate sections. Do NOT use long dashes or separator lines - they break on mobile screens.
+8. Keep each line short (under 35 characters) so it fits in a WhatsApp chat bubble without wrapping badly.
+
+The goal: Owner sees immediately "Which day will I have a problem?" and "What should I do about it?"`;
 
   const result = await generateText({
-    model: gateway("openai/gpt-4o-mini"),
+    model: gateway("anthropic/claude-sonnet-4"),
     prompt,
   });
 

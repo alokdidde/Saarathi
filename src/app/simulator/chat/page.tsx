@@ -106,36 +106,38 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4 md:p-8">
-      {/* Phone Frame */}
-      <div
-        className="relative bg-gray-950 rounded-[2.5rem] md:rounded-[3rem] shadow-2xl ring-1 ring-gray-700"
-        style={{
-          maxWidth: '400px',
-          width: '100%',
-          height: 'min(92vh, 820px)',
-          padding: '10px',
-        }}
-      >
-        {/* Side Buttons */}
-        <div className="absolute -left-0.5 top-24 w-1 h-8 bg-gray-700 rounded-l-sm" />
-        <div className="absolute -left-0.5 top-36 w-1 h-12 bg-gray-700 rounded-l-sm" />
-        <div className="absolute -left-0.5 top-52 w-1 h-12 bg-gray-700 rounded-l-sm" />
-        <div className="absolute -right-0.5 top-32 w-1 h-16 bg-gray-700 rounded-r-sm" />
+    <div className="fixed inset-0 overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4 md:p-8">
+      {/* Phone Frame Container - clips the side buttons */}
+      <div className="overflow-hidden p-1">
+        <div
+          className="relative bg-gray-950 rounded-[2.5rem] md:rounded-[3rem] shadow-2xl ring-1 ring-gray-700"
+          style={{
+            maxWidth: '400px',
+            width: 'calc(100vw - 48px)',
+            height: 'min(92vh, 820px)',
+            padding: '10px',
+          }}
+        >
+          {/* Side Buttons */}
+          <div className="absolute -left-0.5 top-24 w-1 h-8 bg-gray-700 rounded-l-sm" />
+          <div className="absolute -left-0.5 top-36 w-1 h-12 bg-gray-700 rounded-l-sm" />
+          <div className="absolute -left-0.5 top-52 w-1 h-12 bg-gray-700 rounded-l-sm" />
+          <div className="absolute -right-0.5 top-32 w-1 h-16 bg-gray-700 rounded-r-sm" />
 
-        {/* Screen */}
-        <div className="w-full h-full bg-white rounded-[2rem] md:rounded-[2.25rem] overflow-hidden">
-          <ChatView
-            messages={messages}
-            phone={phone}
-            isLoading={isLoading}
-            showInput={true}
-            onSendMessage={handleSendMessage}
-          />
+          {/* Screen */}
+          <div className="w-full h-full bg-white rounded-[2rem] md:rounded-[2.25rem] overflow-hidden">
+            <ChatView
+              messages={messages}
+              phone={phone}
+              isLoading={isLoading}
+              showInput={true}
+              onSendMessage={handleSendMessage}
+            />
+          </div>
+
+          {/* Home Indicator */}
+          <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-28 h-1 bg-gray-600 rounded-full" />
         </div>
-
-        {/* Home Indicator */}
-        <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-28 h-1 bg-gray-600 rounded-full" />
       </div>
     </div>
   );

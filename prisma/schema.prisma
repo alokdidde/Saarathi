@@ -159,3 +159,14 @@ model SimulatorMessage {
 
   @@index([phone, createdAt])
 }
+
+// Customer simulator messages (for collection reminder demo)
+model CustomerMessage {
+  id         String   @id @default(cuid())
+  customerId String   // Identifier for the customer session
+  text       String
+  sender     String   // "business" | "customer"
+  createdAt  DateTime @default(now())
+
+  @@index([customerId, createdAt])
+}
