@@ -102,8 +102,13 @@ export default function SimulatorPage() {
     }
   };
 
-  const clearChat = () => {
+  const clearChat = async () => {
     setMessages([]);
+  };
+
+  const sendImage = async (imageUrl: string, caption?: string) => {
+    // TODO: Implement image sending
+    console.log("Send image:", imageUrl, caption);
   };
 
   const handleReset = async () => {
@@ -243,9 +248,11 @@ export default function SimulatorPage() {
         <div className="flex-1 overflow-hidden">
           <ScenarioPanel
             onSendMessage={sendMessage}
+            onSendImage={sendImage}
             onReset={handleReset}
             onSeed={handleSeed}
             onOpenBrief={handleOpenBrief}
+            onClearChat={clearChat}
             isLoading={isLoading}
           />
         </div>

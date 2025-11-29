@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 interface Message {
@@ -10,7 +10,7 @@ interface Message {
   timestamp: Date | string;
 }
 
-export default function CustomerChatPage() {
+function CustomerChatPageContent() {
   const searchParams = useSearchParams();
   const customerId = searchParams.get("id") || "customer1";
   const customerName = searchParams.get("name") || "TechPark Office";
@@ -104,7 +104,7 @@ export default function CustomerChatPage() {
                 <span className="text-emerald-600 text-lg">P</span>
               </div>
               <div>
-                <h2 className="font-semibold text-sm">Priya's Tiffin Service</h2>
+                <h2 className="font-semibold text-sm">Priya&apos;s Tiffin Service</h2>
                 <p className="text-xs opacity-80">Business Account</p>
               </div>
             </div>
@@ -166,5 +166,13 @@ export default function CustomerChatPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CustomerChatPage() {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+      <CustomerChatPageContent />
+    </Suspense>
   );
 }

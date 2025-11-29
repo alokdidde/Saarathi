@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ChatView, { Message } from "../components/ChatView";
 
-export default function ChatPage() {
+function ChatPageContent() {
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone") || "9876543210";
 
@@ -95,16 +95,6 @@ export default function ChatPage() {
     }
   };
 
-  const handleClear = async () => {
-    try {
-      await fetch(`/api/messages?phone=${phone}`, { method: "DELETE" });
-      setMessages([]);
-      lastFetchRef.current = null;
-    } catch (error) {
-      console.error("Failed to clear messages:", error);
-    }
-  };
-
   return (
     <div className="fixed inset-0 overflow-hidden bg-black flex items-center justify-center p-4 md:p-8">
       {/* Phone Frame Container - clips the side buttons */}
@@ -140,5 +130,13 @@ export default function ChatPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+      <ChatPageContent />
+    </Suspense>
   );
 }

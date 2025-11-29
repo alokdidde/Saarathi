@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import StateInspector from "../components/StateInspector";
 import ScenarioPanel from "../components/ScenarioPanel";
@@ -12,7 +12,7 @@ const DEMO_CUSTOMERS = [
   { id: "sharma", name: "Sharma Ji", amount: 3500, days: 8 },
 ];
 
-export default function ControlPage() {
+function ControlPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialPhone = searchParams.get("phone") || "9876543210";
@@ -213,7 +213,7 @@ export default function ControlPage() {
       await navigator.clipboard.writeText(url);
       setCopyFeedback(`${label} copied!`);
       setTimeout(() => setCopyFeedback(""), 2000);
-    } catch (err) {
+    } catch {
       // Fallback for older browsers
       const textArea = document.createElement("textarea");
       textArea.value = url;
@@ -415,5 +415,13 @@ Dhanyavaad 🙏`;
       </div>
 
     </div>
+  );
+}
+
+export default function ControlPage() {
+  return (
+    <Suspense fallback={<div className="h-screen bg-gray-100" />}>
+      <ControlPageContent />
+    </Suspense>
   );
 }
