@@ -1,7 +1,20 @@
 import { Experimental_Agent as Agent, stepCountIs, tool } from "ai";
 import { gateway } from "@ai-sdk/gateway";
 import { z } from "zod";
+import sharp from "sharp";
 import { db } from "./db";
+
+// Optimize image for AI processing: resize and compress
+async function optimizeImage(base64Data: string): Promise<string> {
+  const buffer = Buffer.from(base64Data, "base64");
+
+  const optimized = await sharp(buffer)
+    .resize(1024, 1024, { fit: "inside", withoutEnlargement: true })
+    .jpeg({ quality: 80 })
+    .toBuffer();
+
+  return optimized.toString("base64");
+}
 
 // Get business context for the system prompt
 async function getBusinessContext(ownerId: string) {
@@ -477,20 +490,34 @@ Pehle mujhe aapke baare mein batao:
     const context = await getBusinessContext(owner.id);
     const agent = createBusinessAgent(owner.id, context, !!imageBase64);
 
-    // Build prompt - multimodal if image provided
-    let prompt: string | Array<{ type: "text"; text: string } | { type: "image"; image: string }>;
+    // Build messages - AI SDK v5 requires messages format for multimodal
+    let result;
 
     if (imageBase64) {
-      const imagePrompt = message || "Is photo mein kya hai? Bill hai toh expense log karo, khata hai toh pending payment create karo.";
-      prompt = [
-        { type: "text", text: imagePrompt },
-        { type: "image", image: imageBase64 },
-      ];
-    } else {
-      prompt = message;
-    }
+      // AI SDK v5 expects base64 without the data URL prefix
+      const rawBase64 = imageBase64.includes(",")
+        ? imageBase64.split(",")[1]
+        : imageBase64;
 
-    const result = await agent.generate({ prompt });
+      // Optimize: resize to max 1024px and compress to 80% JPEG
+      const optimizedBase64 = await optimizeImage(rawBase64);
+
+      const imagePrompt = message || "Is photo mein kya hai? Bill hai toh expense log karo, khata hai toh pending payment create karo.";
+
+      result = await agent.generate({
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: imagePrompt },
+              { type: "image", image: optimizedBase64 },
+            ],
+          },
+        ],
+      });
+    } else {
+      result = await agent.generate({ prompt: message });
+    }
 
     console.log("Agent steps:", result.steps.length);
     console.log("Agent response:", result.text?.substring(0, 100));

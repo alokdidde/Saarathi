@@ -106,7 +106,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-4 md:p-8">
+    <div className="fixed inset-0 overflow-hidden bg-black flex items-center justify-center p-4 md:p-8">
       {/* Phone Frame Container - clips the side buttons */}
       <div className="overflow-hidden p-1">
         <div

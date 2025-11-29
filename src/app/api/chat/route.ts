@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // Store incoming message for simulator history (legacy)
     storeSimulatorMessage({
       from: phone,
-      text: message || "[Photo]",
+      text: message || "",
       timestamp: new Date(),
       type: image ? "image" : "text",
     });
@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
     await db.simulatorMessage.create({
       data: {
         phone,
-        text: message || "[Photo]",
+        text: message || "",
         sender: "user",
-        attachment: image ? { type: "photo", data: image } : null,
+        attachment: image ? { type: "photo", data: image } : undefined,
       },
     });
 
